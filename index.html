@@ -1,0 +1,1677 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manasvi Infotech | Premium IT Solutions</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg-color: #ffffff;
+        --bg-alt: #fcfcfc;
+        --text-main: #050505;
+        --text-muted: #666666;
+        --accent: #000000;
+        --glass-border: rgba(0, 0, 0, 0.08);
+        --card-shadow: rgba(0, 0, 0, 0.08);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+      input,
+      textarea {
+        user-select: auto;
+        -webkit-user-select: auto;
+        cursor: text;
+      }
+
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        font-family: "Inter", sans-serif;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+        cursor: default;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-family: "Syne", sans-serif;
+        font-weight: 800;
+        color: var(--text-main);
+      }
+
+      /* LOADER */
+      .loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: #ffffff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+      }
+      .loader-num {
+        font-family: "Syne", sans-serif;
+        font-size: clamp(3rem, 8vw, 8rem);
+        font-weight: 800;
+        color: var(--text-main);
+      }
+
+      /* FIXED 3D CANVAS WRAPPER */
+      #canvas-fixed-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 20;
+        pointer-events: none;
+      }
+      #canvas-container {
+        width: 100%;
+        height: 100%;
+      }
+
+      /* Ensure Text Stays Above Canvas */
+      .project-panel,
+      .hero-title-wrapper,
+      .services-header {
+        position: relative;
+        z-index: 60;
+      }
+
+      /* SECTIONS */
+      .hero {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        position: relative;
+        padding: 2rem;
+        background: radial-gradient(circle at center, #ffffff 0%, #f4f4f4 100%);
+      }
+
+      @media (max-width: 768px) {
+        .hero {
+          justify-content: center;
+          padding-top: 0;
+        }
+        .hero-content-wrapper {
+          transform: none;
+          margin-bottom: 0;
+        }
+      }
+
+      /* Desktop: push hero text to upper portion so keyboard below doesn't overlap */
+      @media (min-width: 769px) {
+        .hero-content-wrapper {
+          margin-top: -18vh;
+        }
+      }
+
+      .hero-title-wrapper {
+        position: relative;
+        z-index: 60;
+        padding-bottom: 5px;
+      }
+      .hero h1 {
+        font-size: clamp(2.5rem, 8vw, 8rem);
+        line-height: 1;
+        letter-spacing: -0.02em;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, #000000, #444444);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .hero p {
+        font-size: clamp(1rem, 4vw, 1.5rem);
+        color: var(--text-muted);
+        margin-bottom: 0.5rem;
+        z-index: 60;
+        position: relative;
+        font-weight: 500;
+      }
+      .hero .subtext {
+        font-size: clamp(0.7rem, 2.5vw, 1rem);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        z-index: 60;
+        position: relative;
+        font-weight: 600;
+      }
+
+      /* SCROLL INDICATOR */
+      .scroll-indicator {
+        position: fixed;
+        bottom: 40px;
+        right: 40px;
+        font-size: 0.8rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        font-weight: 600;
+        color: var(--text-muted);
+        animation: bounce 2s infinite ease-in-out;
+        z-index: 90;
+        opacity: 0;
+      }
+      @media (max-width: 768px) {
+        .scroll-indicator {
+          bottom: 20px;
+          right: 20px;
+          font-size: 0.6rem;
+        }
+      }
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      /* ABOUT SECTION */
+      .about {
+        min-height: 80vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 10vw;
+        position: relative;
+      }
+      @media (max-width: 768px) {
+        .about {
+          min-height: 100vh;
+        }
+      }
+      .story-text {
+        font-family: "Syne", sans-serif;
+        font-size: clamp(1.8rem, 5vw, 4rem);
+        line-height: 1.2;
+        margin-bottom: 1.5rem;
+        color: #333333;
+        position: relative;
+        z-index: 40;
+      }
+      .story-text span {
+        color: var(--accent);
+        display: inline-block;
+      }
+      .about-desc {
+        font-size: clamp(1rem, 3vw, 1.2rem);
+        max-width: 600px;
+        line-height: 1.6;
+        color: var(--text-muted);
+        margin-top: 2rem;
+        position: relative;
+        z-index: 40;
+      }
+
+      /* PREMIUM SERVICES SECTION */
+      .services-section {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        background: var(--bg-alt);
+        padding-top: 2rem;
+      }
+      .services-header {
+        position: relative;
+        font-size: clamp(2.2rem, 6vw, 3.5rem);
+        z-index: 60;
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+      .cards-container {
+        position: relative;
+        width: 100%;
+        max-width: 900px;
+        height: 65vh;
+        perspective: 1000px;
+        margin: 0 2rem;
+        z-index: 60;
+      }
+
+      /* Glassmorphism Premium Cards */
+      .service-card {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        will-change: transform, opacity;
+        background: transparent;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        transform-style: preserve-3d;
+      }
+      .service-card-inner {
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        border-radius: 0px;
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+        box-shadow:
+          0 20px 40px rgba(0, 0, 0, 0.05),
+          inset 0 0 0 1px rgba(255, 255, 255, 1);
+        overflow: hidden;
+        transition:
+          transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+          box-shadow 0.4s ease;
+        cursor: pointer;
+      }
+      .service-card-inner:hover,
+      .service-card-inner:active {
+        transform: translateY(-12px) scale(1.02) perspective(1000px)
+          rotateX(1.5deg) rotateY(1deg);
+        box-shadow:
+          0 40px 80px rgba(0, 0, 0, 0.12),
+          inset 0 0 0 1px rgba(255, 255, 255, 1);
+      }
+
+      .service-image-wrapper {
+        width: 45%;
+        position: relative;
+        overflow: hidden;
+        background: #e8e8e8; /* placeholder background */
+      }
+      .service-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .service-content {
+        flex: 1;
+        padding: 4rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .service-card h3 {
+        font-size: clamp(1.6rem, 4vw, 2.8rem);
+        margin-bottom: 1.2rem;
+        color: #050505;
+        letter-spacing: -0.03em;
+        line-height: 1.1;
+      }
+      .service-card p {
+        color: #555;
+        font-size: clamp(0.95rem, 2vw, 1.2rem);
+        line-height: 1.6;
+        font-weight: 400;
+      }
+
+      @media (max-width: 768px) {
+        .service-card-inner {
+          flex-direction: column;
+        }
+        .service-image-wrapper {
+          width: 100%;
+          height: 220px;
+          flex-shrink: 0;
+        }
+        .service-content {
+          padding: 1.5rem;
+          text-align: center;
+        }
+        .service-card h3 {
+          margin-bottom: 0.8rem;
+        }
+      }
+
+      /* PROJECTS SECTION */
+      .projects-wrapper {
+        overflow: hidden;
+        background: #fafafa;
+        border-top: 1px solid var(--glass-border);
+        border-bottom: 1px solid var(--glass-border);
+        position: relative;
+      }
+      .projects-section-horizontal {
+        display: flex;
+        height: 50vh;
+        width: 300vw;
+        align-items: center;
+        position: relative;
+        z-index: 40;
+      }
+      .project-panel {
+        width: 100vw;
+        padding: 0 10vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .project-panel h2 {
+        font-size: clamp(2rem, 6vw, 3.5rem);
+        margin-bottom: 1rem;
+      }
+      .project-panel p {
+        font-size: clamp(1rem, 3vw, 1.3rem);
+        color: var(--text-muted);
+        max-width: 600px;
+      }
+
+      /* CONTACT SECTION */
+      .contact-wrapper {
+        padding: 8vw 10vw;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+      }
+
+      /* ── CONTACT: two-column — left: title+keyboard, right: cards ───────── */
+      .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        position: relative;
+        z-index: 40;
+        align-items: center;
+      }
+      .contact-left {
+        display: flex;
+        flex-direction: column;
+      }
+      .contact-grid-title {
+        font-size: clamp(2.2rem, 6vw, 3.5rem);
+        margin-bottom: 1rem;
+      }
+      .keyboard-placeholder {
+        width: 100%;
+        height: 220px;
+        position: relative;
+      }
+
+      @media (max-width: 768px) {
+        .contact-wrapper {
+          padding: 5vh 6vw;
+          min-height: 100vh;
+        }
+        .contact-grid {
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+        }
+        .keyboard-placeholder {
+          height: 130px;
+        }
+      }
+
+      /* ── CONTACT CARDS ─────────────────────────────────────────────────── */
+      .contact-right {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+      }
+      .contact-card {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+        padding: 1.2rem 1.5rem;
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(8px);
+        text-decoration: none;
+        color: inherit;
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease;
+        cursor: pointer;
+      }
+      .contact-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+      }
+      .whatsapp-card {
+        background: #f0faf4;
+        border-color: #25d366;
+      }
+      .whatsapp-card:hover {
+        background: #e2f5ea;
+      }
+      .contact-card-label {
+        font-size: 0.75rem;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        font-weight: 600;
+        margin-bottom: 0.2rem;
+      }
+      .contact-card-value {
+        font-size: clamp(0.9rem, 2vw, 1rem);
+        font-weight: 500;
+        color: var(--text-main);
+      }
+
+      /* ── PHONE DROPDOWN ─────────────────────────────────────────────────── */
+      .phone-card {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+      .phone-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.2rem 1.5rem;
+        cursor: pointer;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+      .phone-card-header-left {
+        display: flex;
+        flex-direction: column;
+      }
+      .phone-chevron {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+        transition: transform 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .phone-chevron svg {
+        width: 16px;
+        height: 16px;
+        stroke: var(--text-muted);
+        fill: none;
+        stroke-width: 2.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        transition: stroke 0.2s ease;
+      }
+      .phone-card.open .phone-chevron {
+        transform: rotate(180deg);
+      }
+      .phone-dropdown {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        border-top: 0px solid var(--glass-border);
+      }
+      .phone-card.open .phone-dropdown {
+        max-height: 200px;
+        border-top-width: 1px;
+      }
+      .phone-option {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.9rem 1.5rem;
+        text-decoration: none;
+        color: var(--text-main);
+        font-size: clamp(0.9rem, 2vw, 1rem);
+        font-weight: 500;
+        border-bottom: 1px solid var(--glass-border);
+        transition: background 0.2s ease;
+      }
+      .phone-option:last-child {
+        border-bottom: none;
+      }
+      .phone-option:hover {
+        background: rgba(0, 0, 0, 0.03);
+      }
+      .phone-option-tag {
+        font-size: 0.7rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        font-weight: 600;
+      }
+      @media (max-width: 768px) {
+        .contact-right {
+          gap: 0.9rem;
+        }
+        .contact-card {
+          padding: 1rem 1.2rem;
+        }
+        .phone-card-header {
+          padding: 1rem 1.2rem;
+        }
+        .phone-option {
+          padding: 0.8rem 1.2rem;
+        }
+      }
+
+      /* ── SCROLL TEXT FILL EFFECT ────────────────────────────────────────── */
+      .fill-on-scroll {
+        background: linear-gradient(to right, #050505 50%, #cccccc 50%);
+        background-size: 200% auto;
+        background-position: 100% center;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      /* Project panels use same effect in white/gray */
+      .project-panel .fill-on-scroll {
+        background: linear-gradient(to right, #050505 50%, #c0c0c0 50%);
+        background-size: 200% auto;
+        background-position: 100% center;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      footer {
+        text-align: center;
+        border-top: 1px solid var(--glass-border);
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        padding: 2rem;
+      }
+      @media (max-width: 768px) {
+        footer {
+          padding: 1.5rem 5vw;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="loader"><div class="loader-num">0</div></div>
+
+    <div id="canvas-fixed-wrapper">
+      <div id="canvas-container"></div>
+    </div>
+
+    <section class="hero">
+      <div class="hero-content-wrapper">
+        <div class="hero-title-wrapper">
+          <h1 class="hero-title">MANASVI INFOTECH</h1>
+        </div>
+        <p class="hero-tagline">
+          Computer Sales, Services & Complete IT Solutions
+        </p>
+        <p class="subtext">Powering Businesses with Technology</p>
+      </div>
+    </section>
+
+    <div class="scroll-indicator">SCROLL</div>
+
+    <section class="about">
+      <div class="story-text line-1 fill-on-scroll">
+        "Technology is not just hardware."
+      </div>
+      <div class="story-text line-2 fill-on-scroll">
+        "It's reliability, speed, and trust."
+      </div>
+      <div class="story-text line-3 fill-on-scroll">
+        "That's what <span>Manasvi Infotech</span> delivers."
+      </div>
+      <div class="about-desc">
+        Manasvi Infotech is a leading computer sales and IT solutions company
+        providing services including hardware sales, networking, hospital
+        projects, CCTV systems, and server installations.
+      </div>
+    </section>
+
+    <section class="services-section">
+      <h2 class="services-header">Our Services</h2>
+      <div class="cards-container">
+        <!-- CARD 1 -->
+        <div class="service-card" style="z-index: 1">
+          <div class="service-card-inner">
+            <div class="service-image-wrapper">
+              <!-- Upload your Hardware image here -->
+              <img src="h.jpg" alt="Hardware" class="service-image" />
+            </div>
+            <div class="service-content">
+              <h3>Hardware Sales</h3>
+              <p>
+                Custom-Built Computers, Accessories & Upgrades strictly tailored
+                for peak performance and durability in professional
+                environments.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 2 -->
+        <div class="service-card" style="z-index: 2">
+          <div class="service-card-inner">
+            <div class="service-image-wrapper">
+              <!-- Upload your Software image here -->
+              <img src="s.jpg" alt="Software" class="service-image" />
+            </div>
+            <div class="service-content">
+              <h3>Software Solutions</h3>
+              <p>
+                Comprehensive Repair, Maintenance, Virus & Malware Removal
+                designed to keep your enterprise systems highly secure and
+                operational.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 3 -->
+        <div class="service-card" style="z-index: 3">
+          <div class="service-card-inner">
+            <div class="service-image-wrapper">
+              <!-- Upload your Networking image here -->
+              <img src="n.jpg" alt="Networking" class="service-image" />
+            </div>
+            <div class="service-content">
+              <h3>Networking Solutions</h3>
+              <p>
+                Robust enterprise network setups, cable management, and seamless
+                infrastructure configurations optimized for large-scale
+                operations.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="projects-wrapper">
+      <section class="projects-section-horizontal">
+        <div class="project-panel">
+          <h2 class="fill-on-scroll">Sugar Factory Network</h2>
+          <p class="fill-on-scroll">
+            End-to-end industrial networking infrastructure ensuring reliable
+            connectivity across massive facilities.
+          </p>
+        </div>
+        <div class="project-panel">
+          <h2 class="fill-on-scroll">Hospital Management</h2>
+          <p class="fill-on-scroll">
+            Integrated IT projects streamlining healthcare administration,
+            patient records, and workflows.
+          </p>
+        </div>
+        <div class="project-panel">
+          <h2 class="fill-on-scroll">Small Hospital CCTV</h2>
+          <p class="fill-on-scroll">
+            Comprehensive security installations providing 24/7 monitoring for
+            patient and staff safety.
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <!-- CONTACT: left = title + keyboard placeholder | right = cards -->
+    <section class="contact-wrapper">
+      <div class="contact-grid">
+        <!-- LEFT: title + 3D keyboard anchor -->
+        <div class="contact-left">
+          <h2 class="contact-grid-title">Let's Connect</h2>
+          <div class="keyboard-placeholder"></div>
+        </div>
+
+        <!-- RIGHT: contact cards -->
+        <div class="contact-right">
+          <!-- PHONE with dropdown -->
+          <div class="contact-card phone-card" id="phoneCard">
+            <div class="phone-card-header" onclick="togglePhone()">
+              <div class="phone-card-header-left">
+                <div class="contact-card-label">Phone</div>
+                <div class="contact-card-value">Tap to choose a number</div>
+              </div>
+              <div class="phone-chevron">
+                <svg viewBox="0 0 24 24">
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </div>
+            </div>
+            <div class="phone-dropdown">
+              <a class="phone-option" href="tel:+918007602334">
+                <span>8007602334</span>
+                <span class="phone-option-tag">Primary</span>
+              </a>
+              <a class="phone-option" href="tel:+919503545084">
+                <span>9503545084</span>
+                <span class="phone-option-tag">Alternate</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- EMAIL — opens mail client -->
+          <a class="contact-card" href="mailto:manaswiinfotech@gmail.com">
+            <div>
+              <div class="contact-card-label">Email</div>
+              <div class="contact-card-value">manaswiinfotech@gmail.com</div>
+            </div>
+          </a>
+
+          <!-- ADDRESS -->
+          <div class="contact-card">
+            <div>
+              <div class="contact-card-label">Address</div>
+              <div class="contact-card-value">
+                Kolhapur — Near Reliance Mall, R K Nagar Road
+              </div>
+            </div>
+          </div>
+
+          <!-- WHATSAPP -->
+          <a
+            class="contact-card whatsapp-card"
+            href="https://wa.me/918007602334"
+            target="_blank"
+            rel="noopener"
+          >
+            <div>
+              <div class="contact-card-label">WhatsApp</div>
+              <div class="contact-card-value">Open WhatsApp Chat</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <footer><p>&copy; 2026 Manasvi Infotech. All rights reserved.</p></footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script>
+      gsap.registerPlugin(ScrollTrigger);
+
+      // ─── DEVICE DETECTION ────────────────────────────────────────────────────
+      const IS_MOBILE = window.innerWidth < 768;
+
+      const lenis = new Lenis({
+        duration: 1.5,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        direction: "vertical",
+        smooth: true,
+      });
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+
+      // --- SOUND LOGIC ---
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      function playThockSound() {
+        if (audioCtx.state === "suspended") audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(
+          30,
+          audioCtx.currentTime + 0.05,
+        );
+        gainNode.gain.setValueAtTime(0.8, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(
+          0.01,
+          audioCtx.currentTime + 0.05,
+        );
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.05);
+      }
+
+      // ─── THREE.JS SCENE SETUP ────────────────────────────────────────────────
+      const container = document.getElementById("canvas-container");
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        80,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        100,
+      );
+      camera.position.set(0, 15, 20);
+
+      const renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true,
+      });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      container.appendChild(renderer.domElement);
+
+      scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+      const dirLight = new THREE.DirectionalLight(0xffffff, 2.0);
+      dirLight.position.set(5, 15, 10);
+      scene.add(dirLight);
+      const glowLight = new THREE.PointLight(0xffffff, 1.5, 50);
+      glowLight.position.set(0, 5, 2);
+      scene.add(glowLight);
+
+      const scrollGroup = new THREE.Group();
+      scrollGroup.userData = { opacity: 1 };
+      scene.add(scrollGroup);
+      const keyGroup = new THREE.Group();
+      scrollGroup.add(keyGroup);
+
+      // Glossy black base plate
+      const baseMat = new THREE.MeshPhysicalMaterial({
+        color: 0x050505,
+        roughness: 0.1,
+        metalness: 0.5,
+        clearcoat: 1.0,
+        clearcoatRoughness: 0.1,
+        transparent: true,
+      });
+      const baseMesh = new THREE.Mesh(
+        new THREE.BoxGeometry(17, 0.5, 5.5),
+        baseMat,
+      );
+      baseMesh.position.y = -0.65;
+      keyGroup.add(baseMesh);
+
+      function createKeyTexture(text) {
+        const cv = document.createElement("canvas");
+        cv.width = cv.height = 256;
+        const ctx = cv.getContext("2d");
+        ctx.fillStyle = "#050505";
+        ctx.fillRect(0, 0, 256, 256);
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 130px Inter, sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(text, 128, 140);
+        const t = new THREE.CanvasTexture(cv);
+        t.anisotropy = renderer.capabilities.getMaxAnisotropy();
+        return t;
+      }
+
+      const keysArray = [];
+      const spacing = 1.9;
+      const sideMat = new THREE.MeshPhysicalMaterial({
+        color: 0xffffff,
+        roughness: 0.1,
+        metalness: 0.1,
+        clearcoat: 1.0,
+        clearcoatRoughness: 0.05,
+        transparent: true,
+      });
+
+      function createRow(word, rowZ) {
+        const startX = -((word.length - 1) * spacing) / 2;
+        for (let i = 0; i < word.length; i++) {
+          const topMat = new THREE.MeshPhysicalMaterial({
+            map: createKeyTexture(word[i]),
+            roughness: 0.1,
+            metalness: 0.3,
+            clearcoat: 1.0,
+            clearcoatRoughness: 0.05,
+            transparent: true,
+          });
+          const mesh = new THREE.Mesh(new THREE.BoxGeometry(1.7, 0.8, 1.7), [
+            sideMat,
+            sideMat,
+            topMat,
+            sideMat,
+            sideMat,
+            sideMat,
+          ]);
+          mesh.position.set(startX + i * spacing, 0, rowZ);
+          mesh.userData = { originalY: 0, isKey: true };
+          keyGroup.add(mesh);
+          keysArray.push(mesh);
+        }
+      }
+      createRow("MANASVI", -1.0);
+      createRow("INFOTECH", 1.0);
+
+      // ─── SHARED: set all material opacity ────────────────────────────────────
+      function setKeyboardOpacity(val) {
+        scrollGroup.userData.opacity = val;
+        scrollGroup.traverse((child) => {
+          if (child.isMesh && child.material) {
+            if (Array.isArray(child.material))
+              child.material.forEach((m) => (m.opacity = val));
+            else child.material.opacity = val;
+          }
+        });
+      }
+
+      // ─── SHARED: map the keyboard-placeholder div to a 3-D world position ────
+      function getContactTargetPos() {
+        const el = document.querySelector(".keyboard-placeholder");
+        if (!el) return new THREE.Vector3();
+        const rect = el.getBoundingClientRect();
+        const maxScroll = Math.max(
+          0,
+          document.documentElement.scrollHeight - window.innerHeight,
+        );
+        const futureTop = rect.top + window.scrollY - maxScroll;
+        const sx = rect.left + rect.width / 2;
+        const sy = futureTop + rect.height / 2;
+        const ndc = new THREE.Vector3(
+          (sx / window.innerWidth) * 2 - 1,
+          -(sy / window.innerHeight) * 2 + 1,
+          0.5,
+        );
+        ndc.unproject(camera);
+        ndc.sub(camera.position).normalize();
+        const d = (0 - camera.position.z) / ndc.z;
+        return new THREE.Vector3()
+          .copy(camera.position)
+          .add(ndc.multiplyScalar(d));
+      }
+
+      // Start hidden
+      scrollGroup.position.set(0, 30, -10);
+      scrollGroup.scale.set(0.1, 0.1, 0.1);
+
+      // ─── LOADER ──────────────────────────────────────────────────────────────
+      let counter = { value: 0 };
+      gsap.to(counter, {
+        value: 100,
+        duration: 2,
+        ease: "power2.out",
+        roundProps: "value",
+        onUpdate: () =>
+          (document.querySelector(".loader-num").innerText = counter.value),
+        onComplete: () => {
+          gsap.to(".loader", {
+            opacity: 0,
+            duration: 0.6,
+            ease: "power3.inOut",
+            onComplete: () => {
+              document.querySelector(".loader").style.display = "none";
+              gsap.to(".hero-title", {
+                y: 0,
+                duration: 1.2,
+                ease: "power4.out",
+              });
+              gsap.to(".scroll-indicator", {
+                opacity: 1,
+                duration: 1.2,
+                ease: "power2.out",
+              });
+              if (IS_MOBILE) mobileInit();
+              else desktopInit();
+            },
+          });
+        },
+      });
+
+      // ─── SCROLL TEXT FILL (both mobile & desktop) ────────────────────────────
+      // Animates .fill-on-scroll elements by shifting background-position left
+      // so the dark colour floods in from the left as the element enters viewport.
+      function initScrollTextFill() {
+        gsap.utils.toArray(".fill-on-scroll").forEach((el) => {
+          gsap.to(el, {
+            backgroundPosition: "0% center",
+            ease: "none",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 85%",
+              end: "top 30%",
+              scrub: true,
+            },
+          });
+        });
+      }
+
+      // ═══════════════════════════════════════════════════════════════════════════
+      //  DESKTOP
+      // ═══════════════════════════════════════════════════════════════════════════
+      // Desktop hero resting position constants — single source of truth
+      // Camera lands at y:12 z:15 fov:35 looking toward origin.
+      // These values place the keyboard in the lower-right quadrant of the
+      // hero viewport without overlapping any text.
+      const D_X = 3.5,
+        D_Y = 8.5,
+        D_Z = 0,
+        D_RX = 0.8,
+        D_RY = -0.3,
+        D_RZ = 0.1,
+        D_S = 0.28;
+
+      function desktopInit() {
+        // Init scroll text fill
+        initScrollTextFill();
+
+        // ── Camera fly-in
+        gsap.to(camera, {
+          fov: 35,
+          duration: 1.2,
+          ease: "power3.out",
+          onUpdate: () => camera.updateProjectionMatrix(),
+        });
+        gsap.to(camera.position, {
+          z: 15,
+          y: 12,
+          duration: 1.2,
+          ease: "power3.out",
+        });
+
+        // ── Keyboard fly-in: animates to resting position, then locks there.
+        // onComplete does a gsap.set to guarantee no floating/drift.
+        gsap.to(scrollGroup.position, {
+          x: D_X,
+          y: D_Y,
+          z: D_Z,
+          duration: 1.2,
+          ease: "back.out(1.2)",
+          onComplete: () => {
+            gsap.set(scrollGroup.position, { x: D_X, y: D_Y, z: D_Z });
+          },
+        });
+        gsap.to(scrollGroup.rotation, {
+          x: D_RX,
+          y: D_RY,
+          z: D_RZ,
+          duration: 1.2,
+          ease: "power3.out",
+          onComplete: () => {
+            gsap.set(scrollGroup.rotation, { x: D_RX, y: D_RY, z: D_RZ });
+          },
+        });
+        gsap.to(scrollGroup.scale, {
+          x: D_S,
+          y: D_S,
+          z: D_S,
+          duration: 1.2,
+          ease: "power3.out",
+          onComplete: () => {
+            gsap.set(scrollGroup.scale, { x: D_S, y: D_S, z: D_S });
+          },
+        });
+
+        window.addEventListener("load", () => ScrollTrigger.refresh());
+
+        // ── Scroll timeline starts only after the user has scrolled 80px,
+        // so scrub can never pull the keyboard away before actual interaction.
+        const masterScrollTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: document.body,
+            start: "top -80px",
+            end: "bottom bottom",
+            scrub: 2.5,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        // ── HERO PARK: keep keyboard locked at resting pos for the hero
+        // scroll band (duration proportional to hero section height).
+        masterScrollTl.to(
+          scrollGroup.position,
+          { x: D_X, y: D_Y, z: D_Z, ease: "none", duration: 1 },
+          "hero",
+        );
+        masterScrollTl.to(
+          scrollGroup.rotation,
+          { x: D_RX, y: D_RY, z: D_RZ, ease: "none", duration: 1 },
+          "hero",
+        );
+        masterScrollTl.to(
+          scrollGroup.scale,
+          { x: D_S, y: D_S, z: D_S, ease: "none", duration: 1 },
+          "hero",
+        );
+
+        // Phase 1 (About)
+        masterScrollTl.to(
+          scrollGroup.position,
+          { x: -5, y: 16, z: -4, ease: "sine.inOut" },
+          "phase1",
+        );
+        masterScrollTl.to(
+          scrollGroup.rotation,
+          { x: 0.6, y: 0.4, z: -0.1, ease: "sine.inOut" },
+          "phase1",
+        );
+        masterScrollTl.to(
+          scrollGroup.scale,
+          { x: 0.15, y: 0.15, z: 0.15, ease: "sine.inOut" },
+          "phase1",
+        );
+
+        // Phase 2 (Services)
+        masterScrollTl.to(
+          scrollGroup.position,
+          { x: 5, y: 15, z: -4, ease: "sine.inOut" },
+          "phase2",
+        );
+        masterScrollTl.to(
+          scrollGroup.rotation,
+          { x: 0.7, y: -0.5, z: 0.1, ease: "sine.inOut" },
+          "phase2",
+        );
+        masterScrollTl.to(
+          scrollGroup.scale,
+          { x: 0.15, y: 0.15, z: 0.15, ease: "sine.inOut" },
+          "phase2",
+        );
+
+        // Phase 3 (Projects)
+        masterScrollTl.to(
+          scrollGroup.position,
+          { x: -5, y: 16, z: -4, ease: "power2.inOut" },
+          "phase3",
+        );
+        masterScrollTl.to(
+          scrollGroup.rotation,
+          { x: 0.8, y: 0.3, z: -0.1, ease: "power2.inOut" },
+          "phase3",
+        );
+        masterScrollTl.to(
+          scrollGroup.scale,
+          { x: 0.08, y: 0.08, z: 0.08, ease: "power2.inOut" },
+          "phase3",
+        );
+
+        // Phase 4 (Contact)
+        masterScrollTl.to(
+          scrollGroup.position,
+          {
+            x: () => getContactTargetPos().x,
+            y: () => getContactTargetPos().y,
+            z: () => getContactTargetPos().z,
+            ease: "power2.out",
+          },
+          "phase4",
+        );
+        masterScrollTl.to(
+          scrollGroup.rotation,
+          { x: 0.6, y: 0, z: 0, ease: "power2.out" },
+          "phase4",
+        );
+        masterScrollTl.to(
+          scrollGroup.scale,
+          { x: 0.35, y: 0.35, z: 0.35, ease: "power2.out" },
+          "phase4",
+        );
+        masterScrollTl.to(
+          scrollGroup.userData,
+          {
+            opacity: 1,
+            ease: "power2.inOut",
+            duration: 0.5,
+            onUpdate: () => setKeyboardOpacity(scrollGroup.userData.opacity),
+          },
+          "phase4",
+        );
+
+        // Drag interaction (desktop)
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        let isDragging = false;
+        let prevMouse = { x: 0, y: 0 };
+
+        window.addEventListener("pointerdown", (e) => {
+          mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+          mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+          raycaster.setFromCamera(mouse, camera);
+          const hits = raycaster.intersectObjects(keyGroup.children, true);
+          if (hits.length > 0) {
+            if (hits[0].object.userData.isKey) {
+              playThockSound();
+              gsap.to(hits[0].object.position, {
+                y: -0.4,
+                duration: 0.05,
+                ease: "power2.out",
+              });
+            }
+            isDragging = true;
+            prevMouse = { x: e.clientX, y: e.clientY };
+            lenis.stop();
+          }
+        });
+        window.addEventListener("pointermove", (e) => {
+          if (!isDragging) return;
+          keyGroup.rotation.y += (e.clientX - prevMouse.x) * 0.01;
+          keyGroup.rotation.x += (e.clientY - prevMouse.y) * 0.01;
+          prevMouse = { x: e.clientX, y: e.clientY };
+        });
+        window.addEventListener("pointerup", () => {
+          if (!isDragging) return;
+          isDragging = false;
+          lenis.start();
+          keysArray.forEach((k) =>
+            gsap.to(k.position, {
+              y: k.userData.originalY,
+              duration: 0.15,
+              ease: "back.out(2)",
+            }),
+          );
+        });
+        lenis.on("scroll", () => {
+          if (
+            !isDragging &&
+            (Math.abs(keyGroup.rotation.x) > 0.001 ||
+              Math.abs(keyGroup.rotation.y) > 0.001)
+          ) {
+            gsap.to(keyGroup.rotation, {
+              x: 0,
+              y: 0,
+              z: 0,
+              duration: 0.6,
+              ease: "power2.out",
+              overwrite: "auto",
+            });
+          }
+        });
+      } // end desktopInit
+
+      // ═══════════════════════════════════════════════════════════════════════════
+      //  MOBILE
+      // ═══════════════════════════════════════════════════════════════════════════
+      function mobileInit() {
+        // Init scroll text fill
+        initScrollTextFill();
+
+        camera.fov = 42;
+        camera.position.set(0, 0, 18);
+        camera.updateProjectionMatrix();
+
+        setKeyboardOpacity(0);
+        gsap.set(scrollGroup.position, { x: 0, y: -12, z: 0 });
+        gsap.set(scrollGroup.scale, { x: 0.18, y: 0.18, z: 0.18 });
+        gsap.set(scrollGroup.rotation, { x: 0.5, y: 0.3, z: -0.08 });
+
+        const HERO_X = 0.2;
+        const HERO_Y = -3.2;
+        const HERO_Z = 1.0;
+        const HERO_S = 0.2;
+        const HERO_RX = 0.55;
+        const HERO_RY = -0.18;
+        const HERO_RZ = 0.06;
+
+        gsap.to(scrollGroup, {
+          delay: 0.3,
+          duration: 0,
+          onComplete: () => setKeyboardOpacity(0),
+        });
+
+        gsap.to(scrollGroup.position, {
+          x: HERO_X,
+          y: HERO_Y,
+          z: HERO_Z,
+          duration: 1.4,
+          delay: 0.4,
+          ease: "back.out(1.1)",
+        });
+        gsap.to(scrollGroup.rotation, {
+          x: HERO_RX,
+          y: HERO_RY,
+          z: HERO_RZ,
+          duration: 1.4,
+          delay: 0.4,
+          ease: "power3.out",
+        });
+        gsap.to(scrollGroup.scale, {
+          x: HERO_S,
+          y: HERO_S,
+          z: HERO_S,
+          duration: 1.4,
+          delay: 0.4,
+          ease: "power3.out",
+        });
+        gsap.to(
+          { v: 0 },
+          {
+            v: 1,
+            duration: 0.7,
+            delay: 0.4,
+            ease: "power2.out",
+            onUpdate: function () {
+              setKeyboardOpacity(this.targets()[0].v);
+            },
+          },
+        );
+
+        let floatTween;
+        gsap.delayedCall(1.9, () => {
+          floatTween = gsap.to(scrollGroup.position, {
+            y: HERO_Y - 0.25,
+            duration: 2.2,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: -1,
+          });
+        });
+
+        window.addEventListener("load", () => ScrollTrigger.refresh());
+
+        const mTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: document.body,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 1.8,
+            invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              if (self.progress > 0.01 && floatTween) {
+                floatTween.kill();
+                floatTween = null;
+              }
+            },
+          },
+        });
+
+        mTl.to(
+          scrollGroup.position,
+          { x: 2.8, y: 3.0, z: -1.5, ease: "power2.inOut" },
+          "mPhase1",
+        );
+        mTl.to(
+          scrollGroup.rotation,
+          { x: 0.9, y: -0.5, z: 0.12, ease: "power2.inOut" },
+          "mPhase1",
+        );
+        mTl.to(
+          scrollGroup.scale,
+          { x: 0.08, y: 0.08, z: 0.08, ease: "power2.inOut" },
+          "mPhase1",
+        );
+
+        mTl.to(
+          scrollGroup.position,
+          { x: 3.5, y: -5.5, z: -2.0, ease: "sine.inOut" },
+          "mPhase2",
+        );
+        mTl.to(
+          scrollGroup.rotation,
+          { x: 1.0, y: 0.4, z: -0.1, ease: "sine.inOut" },
+          "mPhase2",
+        );
+        mTl.to(
+          scrollGroup.scale,
+          { x: 0.06, y: 0.06, z: 0.06, ease: "sine.inOut" },
+          "mPhase2",
+        );
+
+        mTl.to(
+          scrollGroup.position,
+          { x: 6, y: -14, z: -3, ease: "power3.in" },
+          "mPhase3",
+        );
+        mTl.to(
+          scrollGroup.rotation,
+          { x: 1.2, y: -0.6, z: 0.2, ease: "power3.in" },
+          "mPhase3",
+        );
+        mTl.to(
+          scrollGroup.scale,
+          { x: 0.04, y: 0.04, z: 0.04, ease: "power3.in" },
+          "mPhase3",
+        );
+        mTl.to(
+          { v: 1 },
+          {
+            v: 0,
+            ease: "power2.in",
+            onUpdate: function () {
+              setKeyboardOpacity(this.targets()[0].v);
+            },
+          },
+          "mPhase3",
+        );
+
+        mTl.to(
+          scrollGroup.position,
+          {
+            x: () => getContactTargetPos().x,
+            y: () => getContactTargetPos().y,
+            z: () => getContactTargetPos().z,
+            ease: "power2.out",
+          },
+          "mPhase4",
+        );
+        mTl.to(
+          scrollGroup.rotation,
+          { x: 1.2, y: 0, z: 0, ease: "power2.out" },
+          "mPhase4",
+        );
+        mTl.to(
+          scrollGroup.scale,
+          { x: 0.22, y: 0.22, z: 0.22, ease: "power2.out" },
+          "mPhase4",
+        );
+        mTl.to(
+          { v: 0 },
+          {
+            v: 1,
+            ease: "power2.out",
+            onUpdate: function () {
+              setKeyboardOpacity(this.targets()[0].v);
+            },
+          },
+          "mPhase4",
+        );
+
+        let rockY = null;
+        let rockX = null;
+
+        ScrollTrigger.create({
+          trigger: ".contact-wrapper",
+          start: "top 60%",
+          once: true,
+          onEnter: () => {
+            rockY = gsap.to(keyGroup.rotation, {
+              y: 0.13,
+              duration: 3.5,
+              ease: "sine.inOut",
+              yoyo: true,
+              repeat: -1,
+            });
+            rockX = gsap.to(keyGroup.rotation, {
+              x: 0.07,
+              duration: 4.2,
+              ease: "sine.inOut",
+              yoyo: true,
+              repeat: -1,
+              delay: 0.8,
+            });
+          },
+        });
+
+        const mCanvas = renderer.domElement;
+        const mRaycaster = new THREE.Raycaster();
+        const mNDC = new THREE.Vector2();
+        let mDragging = false;
+        let mPrevTouch = { x: 0, y: 0 };
+        let mHitKey = null;
+
+        function mGetNDC(clientX, clientY) {
+          const rect = mCanvas.getBoundingClientRect();
+          mNDC.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+          mNDC.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+        }
+
+        document.addEventListener(
+          "touchstart",
+          (e) => {
+            const touch = e.touches[0];
+            mGetNDC(touch.clientX, touch.clientY);
+            mRaycaster.setFromCamera(mNDC, camera);
+            const hits = mRaycaster.intersectObjects(keyGroup.children, true);
+            if (hits.length === 0) return;
+
+            e.preventDefault();
+            mDragging = true;
+            mPrevTouch = { x: touch.clientX, y: touch.clientY };
+            mHitKey = null;
+
+            document.getElementById(
+              "canvas-fixed-wrapper",
+            ).style.pointerEvents = "auto";
+
+            if (hits[0].object.userData.isKey) {
+              mHitKey = hits[0].object;
+              playThockSound();
+              gsap.to(mHitKey.position, {
+                y: -0.4,
+                duration: 0.07,
+                ease: "power2.out",
+                onComplete: () =>
+                  gsap.to(mHitKey.position, {
+                    y: mHitKey.userData.originalY,
+                    duration: 0.14,
+                    ease: "back.out(2)",
+                  }),
+              });
+            }
+
+            if (rockY) rockY.pause();
+            if (rockX) rockX.pause();
+            lenis.stop();
+          },
+          { passive: false, capture: true },
+        );
+
+        document.addEventListener(
+          "touchmove",
+          (e) => {
+            if (!mDragging) return;
+            e.preventDefault();
+            const touch = e.touches[0];
+            const dx = touch.clientX - mPrevTouch.x;
+            const dy = touch.clientY - mPrevTouch.y;
+            keyGroup.rotation.y += dx * 0.009;
+            keyGroup.rotation.x += dy * 0.009;
+            keyGroup.rotation.x = Math.max(
+              -0.6,
+              Math.min(0.6, keyGroup.rotation.x),
+            );
+            keyGroup.rotation.y = Math.max(
+              -0.6,
+              Math.min(0.6, keyGroup.rotation.y),
+            );
+            mPrevTouch = { x: touch.clientX, y: touch.clientY };
+          },
+          { passive: false, capture: true },
+        );
+
+        document.addEventListener(
+          "touchend",
+          () => {
+            if (!mDragging) return;
+            mDragging = false;
+            mHitKey = null;
+            document.getElementById(
+              "canvas-fixed-wrapper",
+            ).style.pointerEvents = "none";
+            lenis.start();
+            gsap.to(keyGroup.rotation, {
+              x: 0,
+              y: 0,
+              z: 0,
+              duration: 0.9,
+              ease: "elastic.out(1, 0.55)",
+              onComplete: () => {
+                if (rockY) rockY.resume();
+                if (rockX) rockX.resume();
+              },
+            });
+          },
+          { capture: true },
+        );
+      } // end mobileInit
+
+      // ─── RENDER LOOP ──────────────────────────────────────────────────────────
+      function animate() {
+        requestAnimationFrame(animate);
+        glowLight.position.x = scrollGroup.position.x;
+        glowLight.position.y = scrollGroup.position.y + 4;
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      // ─── RESIZE ───────────────────────────────────────────────────────────────
+      window.addEventListener("resize", () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      // ─── CARD STACK ───────────────────────────────────────────────────────────
+      const cards = gsap.utils.toArray(".service-card");
+      gsap.set(cards, { yPercent: 100, opacity: 0, scale: 0.9 });
+      gsap.set(cards[0], { yPercent: 0, opacity: 1, scale: 1 });
+      const servicesTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: ".services-section",
+          start: "top top",
+          end: () => `+=${cards.length * 60}%`,
+          pin: true,
+          scrub: 0.5,
+        },
+      });
+      cards.forEach((card, index) => {
+        if (index === 0) return;
+        servicesTl.to(
+          card,
+          { yPercent: 0, opacity: 1, scale: 1, ease: "none" },
+          index,
+        );
+        servicesTl.to(
+          cards[index - 1],
+          {
+            scale: 0.98,
+            opacity: 0,
+            yPercent: -2,
+            ease: "power1.out",
+          },
+          index,
+        );
+      });
+
+      // ─── PHONE DROPDOWN ───────────────────────────────────────────────────────
+      function togglePhone() {
+        const card = document.getElementById("phoneCard");
+        card.classList.toggle("open");
+      }
+      // Close dropdown when clicking outside
+      document.addEventListener("click", (e) => {
+        const card = document.getElementById("phoneCard");
+        if (card && !card.contains(e.target)) {
+          card.classList.remove("open");
+        }
+      });
+
+      // ─── HORIZONTAL PROJECTS ──────────────────────────────────────────────────
+      const projectSection = document.querySelector(
+        ".projects-section-horizontal",
+      );
+      gsap.to(projectSection, {
+        xPercent: -100 + 100 / 3,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".projects-wrapper",
+          start: "top top",
+          end: () => `+=${projectSection.offsetWidth * 0.8}`,
+          pin: true,
+          scrub: 0.5,
+        },
+      });
+    </script>
+  </body>
+</html>
