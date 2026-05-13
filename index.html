@@ -20,7 +20,6 @@
         --text-muted: #666666;
         --accent: #000000;
         --glass-border: rgba(0, 0, 0, 0.08);
-        --card-shadow: rgba(0, 0, 0, 0.08);
       }
 
       * {
@@ -66,13 +65,29 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        z-index: 9999;
+        z-index: 99999;
       }
       .loader-num {
         font-family: "Syne", sans-serif;
         font-size: clamp(3rem, 8vw, 8rem);
         font-weight: 800;
         color: var(--text-main);
+      }
+
+      /* SITE LOGO */
+      .site-logo {
+        position: absolute;
+        top: 2rem;
+        left: 2rem;
+        max-width: 140px;
+        z-index: 999;
+      }
+      @media (max-width: 768px) {
+        .site-logo {
+          top: 1.5rem;
+          left: 1.5rem;
+          max-width: 100px;
+        }
       }
 
       /* FIXED 3D CANVAS WRAPPER */
@@ -90,14 +105,6 @@
         height: 100%;
       }
 
-      /* Ensure Text Stays Above Canvas */
-      .project-panel,
-      .hero-title-wrapper,
-      .services-header {
-        position: relative;
-        z-index: 60;
-      }
-
       /* SECTIONS */
       .hero {
         height: 100vh;
@@ -111,18 +118,18 @@
         background: radial-gradient(circle at center, #ffffff 0%, #f4f4f4 100%);
       }
 
+      /* Elevated wrapper to guarantee clickability above canvas */
+      .hero-content-wrapper {
+        position: relative;
+        z-index: 999;
+        pointer-events: auto;
+      }
       @media (max-width: 768px) {
         .hero {
           justify-content: center;
           padding-top: 0;
         }
-        .hero-content-wrapper {
-          transform: none;
-          margin-bottom: 0;
-        }
       }
-
-      /* Desktop: push hero text to upper portion so keyboard below doesn't overlap */
       @media (min-width: 769px) {
         .hero-content-wrapper {
           margin-top: -18vh;
@@ -131,7 +138,6 @@
 
       .hero-title-wrapper {
         position: relative;
-        z-index: 60;
         padding-bottom: 5px;
       }
       .hero h1 {
@@ -147,7 +153,6 @@
         font-size: clamp(1rem, 4vw, 1.5rem);
         color: var(--text-muted);
         margin-bottom: 0.5rem;
-        z-index: 60;
         position: relative;
         font-weight: 500;
       }
@@ -155,9 +160,134 @@
         font-size: clamp(0.7rem, 2.5vw, 1rem);
         letter-spacing: 2px;
         text-transform: uppercase;
-        z-index: 60;
         position: relative;
         font-weight: 600;
+        margin-bottom: 2.5rem;
+      }
+
+      /* MORE INFO BUTTON */
+      .more-info-btn {
+        position: relative;
+        z-index: 9999; /* Supreme elevation to prevent blocking */
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.9rem 2.4rem;
+        font-family: "Syne", sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        background: #050505;
+        color: #ffffff;
+        border: none;
+        border-radius: 40px;
+        cursor: pointer;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease,
+          background 0.3s ease;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        pointer-events: auto !important;
+      }
+      .more-info-btn:hover {
+        background: #333333;
+        transform: translateY(-3px);
+        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+      }
+      .more-info-btn:active {
+        transform: translateY(1px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+      }
+
+      /* MODAL STYLES - FULLY VISIBLE, NO SCROLL */
+      .info-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 100000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        visibility: hidden; /* CRITICAL FIX: prevents invisible modal from stealing clicks */
+        transition:
+          opacity 0.4s ease,
+          visibility 0.4s ease;
+      }
+      .info-modal.active {
+        opacity: 1;
+        visibility: visible;
+      }
+      .info-modal-backdrop {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        cursor: pointer;
+      }
+      .info-modal-content {
+        position: relative;
+        z-index: 100001;
+        width: 100%;
+        height: 100%;
+        padding: 3rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        pointer-events: none;
+      }
+      .info-modal-close {
+        position: fixed;
+        top: 2rem;
+        right: 2rem;
+        width: 48px;
+        height: 48px;
+        background: #ffffff;
+        border: none;
+        border-radius: 50%;
+        font-size: 2rem;
+        color: #050505;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition:
+          transform 0.2s ease,
+          background 0.2s ease;
+        z-index: 100002;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        pointer-events: auto;
+      }
+      .info-modal-close:hover {
+        background: #f4f4f4;
+        transform: scale(1.1);
+      }
+
+      .info-modal-image-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        perspective: 1000px;
+        pointer-events: auto;
+      }
+      .info-modal-image {
+        max-width: 100%;
+        max-height: 100%; /* Forces image to scale down to strictly fit screen height */
+        width: auto;
+        height: auto;
+        object-fit: contain; /* Prevents stretching */
+        border-radius: 12px;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+        /* Opacity handled purely by JS to prevent CSS conflict bugs */
       }
 
       /* SCROLL INDICATOR */
@@ -180,6 +310,16 @@
           right: 20px;
           font-size: 0.6rem;
         }
+        .info-modal-content {
+          padding: 1rem;
+        }
+        .info-modal-close {
+          top: 1rem;
+          right: 1rem;
+          width: 40px;
+          height: 40px;
+          font-size: 1.5rem;
+        }
       }
       @keyframes bounce {
         0%,
@@ -199,11 +339,7 @@
         justify-content: center;
         padding: 10vw;
         position: relative;
-      }
-      @media (max-width: 768px) {
-        .about {
-          min-height: 100vh;
-        }
+        z-index: 40;
       }
       .story-text {
         font-family: "Syne", sans-serif;
@@ -255,8 +391,6 @@
         margin: 0 2rem;
         z-index: 60;
       }
-
-      /* Glassmorphism Premium Cards */
       .service-card {
         position: absolute;
         top: 0;
@@ -265,9 +399,6 @@
         height: 100%;
         will-change: transform, opacity;
         background: transparent;
-        backface-visibility: hidden;
-        -webkit-backface-visibility: hidden;
-        transform-style: preserve-3d;
       }
       .service-card-inner {
         width: 100%;
@@ -276,7 +407,6 @@
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
         border: 1px solid rgba(255, 255, 255, 0.6);
-        border-radius: 0px;
         display: flex;
         flex-direction: row;
         align-items: stretch;
@@ -289,20 +419,18 @@
           box-shadow 0.4s ease;
         cursor: pointer;
       }
-      .service-card-inner:hover,
-      .service-card-inner:active {
+      .service-card-inner:hover {
         transform: translateY(-12px) scale(1.02) perspective(1000px)
           rotateX(1.5deg) rotateY(1deg);
         box-shadow:
           0 40px 80px rgba(0, 0, 0, 0.12),
           inset 0 0 0 1px rgba(255, 255, 255, 1);
       }
-
       .service-image-wrapper {
         width: 45%;
         position: relative;
         overflow: hidden;
-        background: #e8e8e8; /* placeholder background */
+        background: #e8e8e8;
       }
       .service-image {
         width: 100%;
@@ -355,6 +483,7 @@
         border-top: 1px solid var(--glass-border);
         border-bottom: 1px solid var(--glass-border);
         position: relative;
+        z-index: 40;
       }
       .projects-section-horizontal {
         display: flex;
@@ -362,7 +491,6 @@
         width: 300vw;
         align-items: center;
         position: relative;
-        z-index: 40;
       }
       .project-panel {
         width: 100vw;
@@ -389,15 +517,13 @@
         flex-direction: column;
         justify-content: center;
         position: relative;
+        z-index: 40;
       }
-
-      /* ── CONTACT: two-column — left: title+keyboard, right: cards ───────── */
       .contact-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 4rem;
         position: relative;
-        z-index: 40;
         align-items: center;
       }
       .contact-left {
@@ -413,7 +539,6 @@
         height: 220px;
         position: relative;
       }
-
       @media (max-width: 768px) {
         .contact-wrapper {
           padding: 5vh 6vw;
@@ -427,8 +552,6 @@
           height: 130px;
         }
       }
-
-      /* ── CONTACT CARDS ─────────────────────────────────────────────────── */
       .contact-right {
         display: flex;
         flex-direction: column;
@@ -474,8 +597,6 @@
         font-weight: 500;
         color: var(--text-main);
       }
-
-      /* ── PHONE DROPDOWN ─────────────────────────────────────────────────── */
       .phone-card {
         flex-direction: column;
         align-items: stretch;
@@ -490,7 +611,6 @@
         padding: 1.2rem 1.5rem;
         cursor: pointer;
         user-select: none;
-        -webkit-user-select: none;
       }
       .phone-card-header-left {
         display: flex;
@@ -568,23 +688,20 @@
         }
       }
 
-      /* ── SCROLL TEXT FILL EFFECT ────────────────────────────────────────── */
+      /* FILL ON SCROLL */
       .fill-on-scroll {
         background: linear-gradient(to right, #050505 50%, #cccccc 50%);
         background-size: 200% auto;
         background-position: 100% center;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        background-clip: text;
       }
-      /* Project panels use same effect in white/gray */
       .project-panel .fill-on-scroll {
         background: linear-gradient(to right, #050505 50%, #c0c0c0 50%);
         background-size: 200% auto;
         background-position: 100% center;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        background-clip: text;
       }
 
       footer {
@@ -593,16 +710,16 @@
         color: var(--text-muted);
         font-size: 0.9rem;
         padding: 2rem;
-      }
-      @media (max-width: 768px) {
-        footer {
-          padding: 1.5rem 5vw;
-        }
+        position: relative;
+        z-index: 40;
       }
     </style>
   </head>
   <body>
     <div class="loader"><div class="loader-num">0</div></div>
+
+    <!-- SITE LOGO -->
+    <img src="Logo.png" alt="Manasvi Infotech Logo" class="site-logo" />
 
     <div id="canvas-fixed-wrapper">
       <div id="canvas-container"></div>
@@ -617,6 +734,11 @@
           Computer Sales, Services & Complete IT Solutions
         </p>
         <p class="subtext">Powering Businesses with Technology</p>
+
+        <!-- MORE INFO BUTTON -->
+        <button id="moreInfoBtn" class="more-info-btn" onclick="openModal()">
+          More Info
+        </button>
       </div>
     </section>
 
@@ -642,11 +764,9 @@
     <section class="services-section">
       <h2 class="services-header">Our Services</h2>
       <div class="cards-container">
-        <!-- CARD 1 -->
         <div class="service-card" style="z-index: 1">
           <div class="service-card-inner">
             <div class="service-image-wrapper">
-              <!-- Upload your Hardware image here -->
               <img src="h.jpg" alt="Hardware" class="service-image" />
             </div>
             <div class="service-content">
@@ -659,12 +779,9 @@
             </div>
           </div>
         </div>
-
-        <!-- CARD 2 -->
         <div class="service-card" style="z-index: 2">
           <div class="service-card-inner">
             <div class="service-image-wrapper">
-              <!-- Upload your Software image here -->
               <img src="s.jpg" alt="Software" class="service-image" />
             </div>
             <div class="service-content">
@@ -677,12 +794,9 @@
             </div>
           </div>
         </div>
-
-        <!-- CARD 3 -->
         <div class="service-card" style="z-index: 3">
           <div class="service-card-inner">
             <div class="service-image-wrapper">
-              <!-- Upload your Networking image here -->
               <img src="n.jpg" alt="Networking" class="service-image" />
             </div>
             <div class="service-content">
@@ -724,18 +838,13 @@
       </section>
     </div>
 
-    <!-- CONTACT: left = title + keyboard placeholder | right = cards -->
     <section class="contact-wrapper">
       <div class="contact-grid">
-        <!-- LEFT: title + 3D keyboard anchor -->
         <div class="contact-left">
           <h2 class="contact-grid-title">Let's Connect</h2>
           <div class="keyboard-placeholder"></div>
         </div>
-
-        <!-- RIGHT: contact cards -->
         <div class="contact-right">
-          <!-- PHONE with dropdown -->
           <div class="contact-card phone-card" id="phoneCard">
             <div class="phone-card-header" onclick="togglePhone()">
               <div class="phone-card-header-left">
@@ -749,26 +858,22 @@
               </div>
             </div>
             <div class="phone-dropdown">
-              <a class="phone-option" href="tel:+918007602334">
-                <span>8007602334</span>
-                <span class="phone-option-tag">Primary</span>
-              </a>
-              <a class="phone-option" href="tel:+919503545084">
-                <span>9503545084</span>
-                <span class="phone-option-tag">Alternate</span>
-              </a>
+              <a class="phone-option" href="tel:+918007602334"
+                ><span>8007602334</span
+                ><span class="phone-option-tag">Primary</span></a
+              >
+              <a class="phone-option" href="tel:+919503545084"
+                ><span>9503545084</span
+                ><span class="phone-option-tag">Alternate</span></a
+              >
             </div>
           </div>
-
-          <!-- EMAIL — opens mail client -->
-          <a class="contact-card" href="mailto:manaswiinfotech@gmail.com">
-            <div>
+          <a class="contact-card" href="mailto:manaswiinfotech@gmail.com"
+            ><div>
               <div class="contact-card-label">Email</div>
               <div class="contact-card-value">manaswiinfotech@gmail.com</div>
-            </div>
-          </a>
-
-          <!-- ADDRESS -->
+            </div></a
+          >
           <div class="contact-card">
             <div>
               <div class="contact-card-label">Address</div>
@@ -777,24 +882,37 @@
               </div>
             </div>
           </div>
-
-          <!-- WHATSAPP -->
           <a
             class="contact-card whatsapp-card"
             href="https://wa.me/918007602334"
             target="_blank"
             rel="noopener"
-          >
-            <div>
+            ><div>
               <div class="contact-card-label">WhatsApp</div>
               <div class="contact-card-value">Open WhatsApp Chat</div>
-            </div>
-          </a>
+            </div></a
+          >
         </div>
       </div>
     </section>
 
     <footer><p>&copy; 2026 Manasvi Infotech. All rights reserved.</p></footer>
+
+    <!-- INFO MODAL -->
+    <div class="info-modal" id="infoModal">
+      <div class="info-modal-backdrop" onclick="closeModal()"></div>
+      <div class="info-modal-content">
+        <button class="info-modal-close" onclick="closeModal()">&times;</button>
+        <div class="info-modal-image-wrapper">
+          <img
+            src="Manaswi Infotech Info.png"
+            alt="Manasvi Infotech Details"
+            class="info-modal-image"
+            id="modalImage"
+          />
+        </div>
+      </div>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -803,8 +921,6 @@
 
     <script>
       gsap.registerPlugin(ScrollTrigger);
-
-      // ─── DEVICE DETECTION ────────────────────────────────────────────────────
       const IS_MOBILE = window.innerWidth < 768;
 
       const lenis = new Lenis({
@@ -818,6 +934,43 @@
         requestAnimationFrame(raf);
       }
       requestAnimationFrame(raf);
+
+      // Set initial button state for GSAP
+      gsap.set("#moreInfoBtn", { opacity: 0, y: 30 });
+
+      // ─── MODAL CONTROLS & ANIMATION ──────────────────────────────────────────
+      function openModal() {
+        const modal = document.getElementById("infoModal");
+        modal.classList.add("active");
+        lenis.stop(); // Locks scroll
+
+        // GSAP Reveal Animation (ClearProps transform prevents opacity wiping)
+        gsap.fromTo(
+          "#modalImage",
+          { scale: 0.85, opacity: 0, y: 40, rotationX: 10 },
+          {
+            scale: 1,
+            opacity: 1,
+            y: 0,
+            rotationX: 0,
+            duration: 0.7,
+            ease: "back.out(1.2)",
+            clearProps: "transform",
+          },
+        );
+      }
+
+      function closeModal() {
+        gsap.to("#modalImage", {
+          scale: 0.95,
+          opacity: 0,
+          duration: 0.3,
+          onComplete: () => {
+            document.getElementById("infoModal").classList.remove("active");
+            lenis.start();
+          },
+        });
+      }
 
       // --- SOUND LOGIC ---
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -875,7 +1028,6 @@
       const keyGroup = new THREE.Group();
       scrollGroup.add(keyGroup);
 
-      // Glossy black base plate
       const baseMat = new THREE.MeshPhysicalMaterial({
         color: 0x050505,
         roughness: 0.1,
@@ -946,7 +1098,6 @@
       createRow("MANASVI", -1.0);
       createRow("INFOTECH", 1.0);
 
-      // ─── SHARED: set all material opacity ────────────────────────────────────
       function setKeyboardOpacity(val) {
         scrollGroup.userData.opacity = val;
         scrollGroup.traverse((child) => {
@@ -958,7 +1109,6 @@
         });
       }
 
-      // ─── SHARED: map the keyboard-placeholder div to a 3-D world position ────
       function getContactTargetPos() {
         const el = document.querySelector(".keyboard-placeholder");
         if (!el) return new THREE.Vector3();
@@ -983,11 +1133,10 @@
           .add(ndc.multiplyScalar(d));
       }
 
-      // Start hidden
       scrollGroup.position.set(0, 30, -10);
       scrollGroup.scale.set(0.1, 0.1, 0.1);
 
-      // ─── LOADER ──────────────────────────────────────────────────────────────
+      // ─── LOADER & ENTRANCE ANIMATIONS ───────────────────────────────────────
       let counter = { value: 0 };
       gsap.to(counter, {
         value: 100,
@@ -1003,16 +1152,30 @@
             ease: "power3.inOut",
             onComplete: () => {
               document.querySelector(".loader").style.display = "none";
+
               gsap.to(".hero-title", {
                 y: 0,
                 duration: 1.2,
                 ease: "power4.out",
               });
+
+              // Reveal Button securely
+              gsap.to("#moreInfoBtn", {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.3,
+                ease: "power3.out",
+                clearProps: "transform",
+              });
+
               gsap.to(".scroll-indicator", {
                 opacity: 1,
                 duration: 1.2,
+                delay: 0.5,
                 ease: "power2.out",
               });
+
               if (IS_MOBILE) mobileInit();
               else desktopInit();
             },
@@ -1020,9 +1183,6 @@
         },
       });
 
-      // ─── SCROLL TEXT FILL (both mobile & desktop) ────────────────────────────
-      // Animates .fill-on-scroll elements by shifting background-position left
-      // so the dark colour floods in from the left as the element enters viewport.
       function initScrollTextFill() {
         gsap.utils.toArray(".fill-on-scroll").forEach((el) => {
           gsap.to(el, {
@@ -1041,10 +1201,6 @@
       // ═══════════════════════════════════════════════════════════════════════════
       //  DESKTOP
       // ═══════════════════════════════════════════════════════════════════════════
-      // Desktop hero resting position constants — single source of truth
-      // Camera lands at y:12 z:15 fov:35 looking toward origin.
-      // These values place the keyboard in the lower-right quadrant of the
-      // hero viewport without overlapping any text.
       const D_X = 3.5,
         D_Y = 8.5,
         D_Z = 0,
@@ -1054,10 +1210,7 @@
         D_S = 0.28;
 
       function desktopInit() {
-        // Init scroll text fill
         initScrollTextFill();
-
-        // ── Camera fly-in
         gsap.to(camera, {
           fov: 35,
           duration: 1.2,
@@ -1071,8 +1224,6 @@
           ease: "power3.out",
         });
 
-        // ── Keyboard fly-in: animates to resting position, then locks there.
-        // onComplete does a gsap.set to guarantee no floating/drift.
         gsap.to(scrollGroup.position, {
           x: D_X,
           y: D_Y,
@@ -1106,8 +1257,6 @@
 
         window.addEventListener("load", () => ScrollTrigger.refresh());
 
-        // ── Scroll timeline starts only after the user has scrolled 80px,
-        // so scrub can never pull the keyboard away before actual interaction.
         const masterScrollTl = gsap.timeline({
           scrollTrigger: {
             trigger: document.body,
@@ -1117,9 +1266,6 @@
             invalidateOnRefresh: true,
           },
         });
-
-        // ── HERO PARK: keep keyboard locked at resting pos for the hero
-        // scroll band (duration proportional to hero section height).
         masterScrollTl.to(
           scrollGroup.position,
           { x: D_X, y: D_Y, z: D_Z, ease: "none", duration: 1 },
@@ -1136,7 +1282,6 @@
           "hero",
         );
 
-        // Phase 1 (About)
         masterScrollTl.to(
           scrollGroup.position,
           { x: -5, y: 16, z: -4, ease: "sine.inOut" },
@@ -1153,7 +1298,6 @@
           "phase1",
         );
 
-        // Phase 2 (Services)
         masterScrollTl.to(
           scrollGroup.position,
           { x: 5, y: 15, z: -4, ease: "sine.inOut" },
@@ -1170,7 +1314,6 @@
           "phase2",
         );
 
-        // Phase 3 (Projects)
         masterScrollTl.to(
           scrollGroup.position,
           { x: -5, y: 16, z: -4, ease: "power2.inOut" },
@@ -1187,7 +1330,6 @@
           "phase3",
         );
 
-        // Phase 4 (Contact)
         masterScrollTl.to(
           scrollGroup.position,
           {
@@ -1219,7 +1361,6 @@
           "phase4",
         );
 
-        // Drag interaction (desktop)
         const raycaster = new THREE.Raycaster();
         const mouse = new THREE.Vector2();
         let isDragging = false;
@@ -1278,38 +1419,34 @@
             });
           }
         });
-      } // end desktopInit
+      }
 
       // ═══════════════════════════════════════════════════════════════════════════
       //  MOBILE
       // ═══════════════════════════════════════════════════════════════════════════
       function mobileInit() {
-        // Init scroll text fill
         initScrollTextFill();
-
         camera.fov = 42;
         camera.position.set(0, 0, 18);
         camera.updateProjectionMatrix();
-
         setKeyboardOpacity(0);
         gsap.set(scrollGroup.position, { x: 0, y: -12, z: 0 });
         gsap.set(scrollGroup.scale, { x: 0.18, y: 0.18, z: 0.18 });
         gsap.set(scrollGroup.rotation, { x: 0.5, y: 0.3, z: -0.08 });
 
-        const HERO_X = 0.2;
-        const HERO_Y = -3.2;
-        const HERO_Z = 1.0;
-        const HERO_S = 0.2;
-        const HERO_RX = 0.55;
-        const HERO_RY = -0.18;
-        const HERO_RZ = 0.06;
+        const HERO_X = 0.2,
+          HERO_Y = -3.2,
+          HERO_Z = 1.0,
+          HERO_S = 0.2,
+          HERO_RX = 0.55,
+          HERO_RY = -0.18,
+          HERO_RZ = 0.06;
 
         gsap.to(scrollGroup, {
           delay: 0.3,
           duration: 0,
           onComplete: () => setKeyboardOpacity(0),
         });
-
         gsap.to(scrollGroup.position, {
           x: HERO_X,
           y: HERO_Y,
@@ -1514,16 +1651,13 @@
             mRaycaster.setFromCamera(mNDC, camera);
             const hits = mRaycaster.intersectObjects(keyGroup.children, true);
             if (hits.length === 0) return;
-
             e.preventDefault();
             mDragging = true;
             mPrevTouch = { x: touch.clientX, y: touch.clientY };
             mHitKey = null;
-
             document.getElementById(
               "canvas-fixed-wrapper",
             ).style.pointerEvents = "auto";
-
             if (hits[0].object.userData.isKey) {
               mHitKey = hits[0].object;
               playThockSound();
@@ -1539,7 +1673,6 @@
                   }),
               });
             }
-
             if (rockY) rockY.pause();
             if (rockX) rockX.pause();
             lenis.stop();
@@ -1594,9 +1727,8 @@
           },
           { capture: true },
         );
-      } // end mobileInit
+      }
 
-      // ─── RENDER LOOP ──────────────────────────────────────────────────────────
       function animate() {
         requestAnimationFrame(animate);
         glowLight.position.x = scrollGroup.position.x;
@@ -1605,14 +1737,12 @@
       }
       animate();
 
-      // ─── RESIZE ───────────────────────────────────────────────────────────────
       window.addEventListener("resize", () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
       });
 
-      // ─── CARD STACK ───────────────────────────────────────────────────────────
       const cards = gsap.utils.toArray(".service-card");
       gsap.set(cards, { yPercent: 100, opacity: 0, scale: 0.9 });
       gsap.set(cards[0], { yPercent: 0, opacity: 1, scale: 1 });
@@ -1634,22 +1764,15 @@
         );
         servicesTl.to(
           cards[index - 1],
-          {
-            scale: 0.98,
-            opacity: 0,
-            yPercent: -2,
-            ease: "power1.out",
-          },
+          { scale: 0.95, opacity: 0.5, yPercent: -5, ease: "none" },
           index,
         );
       });
 
-      // ─── PHONE DROPDOWN ───────────────────────────────────────────────────────
       function togglePhone() {
         const card = document.getElementById("phoneCard");
         card.classList.toggle("open");
       }
-      // Close dropdown when clicking outside
       document.addEventListener("click", (e) => {
         const card = document.getElementById("phoneCard");
         if (card && !card.contains(e.target)) {
@@ -1657,7 +1780,6 @@
         }
       });
 
-      // ─── HORIZONTAL PROJECTS ──────────────────────────────────────────────────
       const projectSection = document.querySelector(
         ".projects-section-horizontal",
       );
